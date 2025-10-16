@@ -8,7 +8,7 @@ RUN git clone https://github.com/vibevoice-community/VibeVoice-API.git
 WORKDIR /app/VibeVoice-API
 
 # Install the package using uv pip
-RUN uv pip install -e .
+RUN uv pip install -e . --system
 
 # --- Runner stage ---
 FROM python:3.11-alpine
