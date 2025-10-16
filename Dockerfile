@@ -4,12 +4,12 @@ FROM ghcr.io/astral-sh/uv:alpine as builder
 WORKDIR /app
 RUN apk add git build-base
 # Clone the repository
-RUN git clone https://github.com/vibevoice-community/VibeVoice-API.git
+RUN git clone https://github.com/earetaurus/VibeVoice-API.git
 WORKDIR /app/VibeVoice-API
 
 # Install the package using uv pip
 RUN uv venv --python 3.11
-RUN uv pip install .  --extra-index-url https://download.pytorch.org/whl/cu126 --index-strategy unsafe-best-match
+RUN uv pip install .
 
 # --- Runner stage ---
 FROM python:3.11-alpine
