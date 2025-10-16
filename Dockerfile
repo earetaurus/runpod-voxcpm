@@ -8,12 +8,11 @@ RUN git clone https://github.com/vibevoice-community/VibeVoice-API.git
 WORKDIR /app/VibeVoice-API
 
 # Install the package using uv pip
-RUN uv venv --python 3.11
-RUN uv pip install torch --index-url https://download.pytorch.org/whl/cu126
+RUN uv venv --python 3.10
 RUN uv pip install -e . 
 
 # --- Runner stage ---
-FROM python:3.11-alpine
+FROM python:3.10-alpine
 
 WORKDIR /app
 
