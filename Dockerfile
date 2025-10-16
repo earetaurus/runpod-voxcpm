@@ -2,7 +2,7 @@ FROM alpine:latest
 
 WORKDIR /app
 RUN git clone https://github.com/earetaurus/VibeVoice-API
-RUN apd add git build-base uv
+RUN apk add git build-base uv
 WORKDIR /app/VibeVoice-API
 RUN uv venv --python 3.11
 RUN uv pip install vibevoice-api prometheus_client
