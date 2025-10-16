@@ -9,6 +9,7 @@ WORKDIR /app/VibeVoice-API
 
 # Install the package using uv pip
 RUN uv venv --python 3.11
+RUN uv pip install torch --index-url https://download.pytorch.org/whl/cu126
 RUN uv pip install -e . 
 
 # --- Runner stage ---
