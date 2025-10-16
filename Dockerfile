@@ -5,7 +5,7 @@ RUN git clone https://github.com/earetaurus/VibeVoice-API
 RUN apd add git build-base uv
 WORKDIR /app/VibeVoice-API
 RUN uv venv --python 3.11
-RUN uv pip install vibevoice-api
+RUN uv pip install vibevoice-api prometheus_client
 
 # ENV SOME_VARIABLE=some_value
 EXPOSE 8000
