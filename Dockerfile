@@ -1,8 +1,8 @@
 # Builder stage
-FROM ghcr.io/astral-sh/uv:bookworm-slim as builder
+FROM ghcr.io/astral-sh/uv:alpine as builder
 
 WORKDIR /app
-
+RUN apk add git build-base
 # Clone the repository
 RUN git clone https://github.com/vibevoice-community/VibeVoice-API.git
 WORKDIR /app/VibeVoice-API
