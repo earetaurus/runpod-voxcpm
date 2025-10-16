@@ -27,4 +27,4 @@ COPY --from=builder /app/.venv /app/.venv
 EXPOSE 8000
 
 # Command to run the application
-CMD ["uv", "run", "-m", "vibevoice_api.server", "--model_path", "vibevoice/VibeVoice-7B", "--port", "8000"]
+CMD ["uv", "run","python", "-m", "vibevoice_api.server", "--model_path", "vibevoice/VibeVoice-7B", "--port", "8000"]
