@@ -22,7 +22,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build and push Docker image
       env:
-        IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/vibevoice-runpod
+        IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/voxcpm-runpod
       run: |
         docker build . --file Dockerfile --tag ${{ env.IMAGE_NAME }}:$(date +%s) --tag ${{ env.IMAGE_NAME }}:latest
         docker push ${{ env.IMAGE_NAME }}:latest

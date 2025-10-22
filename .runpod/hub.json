@@ -1,6 +1,6 @@
 {
-  "title": "Vibevoice Runpod",
-  "description": "vibevoice for serverless",
+  "title": "voxcpm Runpod",
+  "description": "voxcpm for serverless",
   "type": "serverless",
   "category": "audio",
   "iconUrl": "https://example.com/icon.png",
