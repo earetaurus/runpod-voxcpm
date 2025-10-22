@@ -56,10 +56,12 @@ def synthesize_speech(text: str,prompt_text: str = None,prompt_wav_path: str = N
     return base64.b64encode(buf.read()).decode("utf-8")
 
 def handler(job):
+
     job_input = job.get("input", {})
     text = job_input.get("text")
     prompt_text = job_input.get('prompt_text', None)
     prompt_wav_url = job_input.get('prompt_wav_url', None)
+    prompt_wav_path = None
     if prompt_wav_url:
         custom_wav_folder = "customwav"
         os.makedirs(custom_wav_folder, exist_ok=True)
