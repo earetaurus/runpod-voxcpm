@@ -20,14 +20,12 @@ fair warning this is 80% vibecoding
   "input": {
     "text": "Hello World",
     "prompt_text": "the text spoken in the wav",
-    "prompt_wav_url": "link to wav file"
+    "prompt_wav_url": "link to wav file use copyparty"
   }
 }
 ```
 
 This repository contains a serverless implementation of VoxCPM designed to run on RunPod. It allows for text-to-speech synthesis using the VoxCPM model.
-
-heaviliy wip not production ready not even working atm
 
 ## Features
 
