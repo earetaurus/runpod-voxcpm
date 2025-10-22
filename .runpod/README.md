@@ -1,5 +1,30 @@
 # VoxCPM Runpod Serverless Implementation
 
+fair warning this is 80% vibecoding
+
+## Usage Example 
+
+```json
+{
+  "input": {
+    "text": "Hello World"
+  }
+}
+```
+
+
+## Usage Example voice cloning
+
+```json
+{
+  "input": {
+    "text": "Hello World",
+    "prompt_text": "the text spoken in the wav",
+    "prompt_wav_url": "link to wav file"
+  }
+}
+```
+
 This repository contains a serverless implementation of VoxCPM designed to run on RunPod. It allows for text-to-speech synthesis using the VoxCPM model.
 
 heaviliy wip not production ready not even working atm
@@ -19,3 +44,4 @@ This project is inspired by and built upon the following resources:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+[![Runpod](https://api.runpod.io/badge/earetaurus/runpod-voxcpm)](https://console.runpod.io/hub/earetaurus/runpod-voxcpm)
