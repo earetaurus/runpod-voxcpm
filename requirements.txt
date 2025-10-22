@@ -4,3 +4,4 @@ runpod
 soundfile
 transformers
 voxcpm
+requests

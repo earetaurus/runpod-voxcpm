@@ -1,6 +1,7 @@
 import base64
 import io
 import os
+import requests
 
 import numpy as np
 import soundfile as sf
@@ -55,6 +56,21 @@ def synthesize_speech(text: str,prompt_text: str = None,prompt_wav_path: str = N
     buf.seek(0)
     return base64.b64encode(buf.read()).decode("utf-8")
 
+
+def download_wav(url: str, save_path: str):
+    """Downloads a WAV file from a URL and saves it to a specified path."""
+    try:
+        response = requests.get(url, stream=True)
+        response.raise_for_status()  # Raise an exception for bad status codes
+        with open(save_path, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                f.write(chunk)
+        print(f"Successfully downloaded WAV from {url} to {save_path}")
+    except requests.exceptions.RequestException as e:
+        print(f"Error downloading WAV from {url}: {e}")
+        raise
+
+
 def handler(job):
 
     job_input = job.get("input", {})
@@ -70,6 +86,8 @@ def handler(job):
         if not filename:
             filename = "downloaded_prompt.wav"
         prompt_wav_path = os.path.join(custom_wav_folder, filename)
+        # Download the WAV file if prompt_wav_url is provided
+        download_wav(prompt_wav_url, prompt_wav_path)
 
     # Language might not be directly supported by VoxCPM in the same way as VibeVoice
     # We'll pass it but note it might be ignored by the model.
