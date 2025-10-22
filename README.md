@@ -19,3 +19,4 @@ This project is inspired by and built upon the following resources:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+[![Runpod](https://api.runpod.io/badge/earetaurus/runpod-voxcpm)](https://console.runpod.io/hub/earetaurus/runpod-voxcpm)
