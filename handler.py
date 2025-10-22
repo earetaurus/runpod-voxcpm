@@ -83,19 +83,7 @@ def handler(job):
 
 # Check if the script is run directly (for local testing or execution)
 if __name__ == "__main__":
-    # Example of how to run the handler locally
-    # This part is for testing and would not typically be in the final serverless deployment
-    test_job = {"input": {"text": "Hello world, this is a test.", "language": "en"}}
-    print("Running local test...")
-    result = handler(test_job)
-    print("Local test result:", result)
-
-    # To save the output to a file for verification:
-    if "audio_base64" in result:
-        audio_data = base64.b64decode(result["audio_base64"])
-        with open("output_test.wav", "wb") as f:
-            f.write(audio_data)
-        print("Saved output to output_test.wav")
+    runpod.serverless.start({"handler": handler})
 
 # This line is crucial for RunPod serverless execution
 runpod.serverless.start({"handler": handler})

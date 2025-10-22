@@ -1,11 +1,10 @@
-FROM runpod/pytorch:2.8.0-py3.11-cuda12.8.1-cudnn-devel-ubuntu22.04
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+FROM python:3.11-slim
 WORKDIR /app
-COPY pyproject.toml .
+COPY requirements.txt .
 COPY handler.py .
 COPY .runpod ./.runpod
-RUN uv sync
+RUN pip install --no-cache-dir -r requirements.txt
 ENV HF_HOME=/workspace/hf
 ENV VOXCPM_MODEL=openbmb/VoxCPM-0.5B
 ENV voxcpmwav=none
-CMD ["uv", "run", "handler.py"]
+CMD ["python3", "-u", "handler.py"]
