@@ -30,16 +30,14 @@ model = VoxCPM.from_pretrained(VOXCPM_MODEL)
 # Store sample rate from the model
 SAMPLE_RATE = model.tts_model.sample_rate
 
-def synthesize_speech(text: str, language: str = None) -> str:
+def synthesize_speech(text: str,prompt_text: str = None,prompt_wav_path: str = None, language: str = None) -> str:
     """
     Generate speech audio from text using VoxCPM and return base64-encoded WAV.
     VoxCPM's generate_streaming returns chunks, which are concatenated.
     Language parameter is kept for signature compatibility but might not be used by VoxCPM.
     """
-    set_seed(42) # Setting seed for reproducibility if needed for generation
     audio_chunks = []
-    # Using generate_streaming for potentially better memory efficiency
-    for chunk in model.generate_streaming(text):
+    for chunk in model.generate_streaming(text,prompt_wav_path,prompt_text):
         audio_chunks.append(chunk)
 
     if not audio_chunks:
@@ -58,12 +56,19 @@ def synthesize_speech(text: str, language: str = None) -> str:
     return base64.b64encode(buf.read()).decode("utf-8")
 
 def handler(job):
-    """
-    Expects: { "input": { "text": str, "language": str (optional, may not be used by VoxCPM) } }
-    Returns: { "language": str, "audio_base64": str }
-    """
     job_input = job.get("input", {})
     text = job_input.get("text")
+    prompt_text = job_input.get('prompt_text', None)
+    prompt_wav_url = job_input.get('prompt_wav_url', None)
+    if prompt_wav_url:
+        custom_wav_folder = "customwav"
+        os.makedirs(custom_wav_folder, exist_ok=True)
+        # Create a filename from the URL or use a default if URL is just a domain
+        filename = os.path.basename(prompt_wav_url)
+        if not filename:
+            filename = "downloaded_prompt.wav"
+        prompt_wav_path = os.path.join(custom_wav_folder, filename)
+
     # Language might not be directly supported by VoxCPM in the same way as VibeVoice
     # We'll pass it but note it might be ignored by the model.
     language = job_input.get("language", DEFAULT_LANGUAGE)
@@ -74,7 +79,7 @@ def handler(job):
     try:
         # Pass language if it's meaningful for VoxCPM, otherwise omit or handle as None
         # For now, passing it as is, assuming it might be used in future versions or specific models.
-        audio_b64 = synthesize_speech(text.strip(), language)
+        audio_b64 = synthesize_speech(text.strip(),prompt_text,prompt_wav_path, language)
         # Return the language code that was requested or default
         return {"language": language, "audio_base64": audio_b64}
     except Exception as e:

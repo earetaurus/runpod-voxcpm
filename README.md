@@ -1,5 +1,7 @@
 # VoxCPM Runpod Serverless Implementation
 
+fair warning this is 80% vibe codeded 
+
 This repository contains a serverless implementation of VoxCPM designed to run on RunPod. It allows for text-to-speech synthesis using the VoxCPM model.
 
 heaviliy wip not production ready not even working atm
