@@ -63,7 +63,7 @@ def handler(job):
     prompt_wav_url = job_input.get('prompt_wav_url', None)
     prompt_wav_path = None
     if prompt_wav_url:
-        custom_wav_folder = "customwav"
+        custom_wav_folder = "/workspace/customwav"
         os.makedirs(custom_wav_folder, exist_ok=True)
         # Create a filename from the URL or use a default if URL is just a domain
         filename = os.path.basename(prompt_wav_url)

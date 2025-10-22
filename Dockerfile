@@ -9,6 +9,9 @@ RUN apt update && apt install build-essential -y --no-install-recommends && rm -
 RUN uv pip install --no-cache-dir -r requirements.txt --system
 ENV HF_HOME=/workspace/hf
 ENV VOXCPM_MODEL=openbmb/VoxCPM-0.5B
+ENV TOKENIZERS_PARALLELISM=false
+ENV retry_badcase=false
+
 RUN uv run qtest_predownload.py
 #CMD ["python3", "-u", "handler.py"]
 CMD ["uv", "run", "handler.py"]
