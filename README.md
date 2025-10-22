@@ -10,6 +10,7 @@ heaviliy wip not production ready not even working atm
 *   **VoxCPM Integration**: Leverages the VoxCPM model for high-quality speech synthesis.
 
 ## Acknowledgements
+
 This project is inspired by and built upon the following resources:
 
 *   [VoxCPM](https://github.com/OpenBMB/VoxCPM/)
