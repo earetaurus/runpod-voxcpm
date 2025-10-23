@@ -8,7 +8,22 @@
     "runsOn": "GPU",
     "containerDiskInGb": 40,
     "gpuIds": "AMPERE_16",
-    "presets":[],
+    "presets":[
+      {
+        "name": "no vc",
+        "defaults": {
+          "text": "Hello, World!"
+        }
+      },
+          {
+        "name": "vc",
+        "defaults": {
+          "text": "Hello World",
+          "prompt_text": "the text spoken in the wav",
+          "prompt_wav_url": "link to wav file use copy party"
+        }
+      }
+    ],
     "env": []
   }
 }

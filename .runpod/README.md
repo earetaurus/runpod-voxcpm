@@ -20,7 +20,7 @@ fair warning this is 80% vibecoding
   "input": {
     "text": "Hello World",
     "prompt_text": "the text spoken in the wav",
-    "prompt_wav_url": "link to wav file"
+    "prompt_wav_url": "link to wav file use copy party"
   }
 }
 ```
