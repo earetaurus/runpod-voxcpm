@@ -9,7 +9,7 @@
     }
   ],
   "config": {
-    "gpuTypeId": "AMPERE_16",
+    "gpuTypeId": "NVIDIA GeForce RTX 4090",
     "gpuCount": 1
   }
 }
