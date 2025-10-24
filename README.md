@@ -1,6 +1,8 @@
 # VoxCPM Runpod Serverless Implementation
 
 fair warning this is 80% vibecoding
+check out
+https://github.com/earetaurus/tts-apibridge
 
 ## Usage Example 
 
@@ -43,3 +45,6 @@ This project is inspired by and built upon the following resources:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 [![Runpod](https://api.runpod.io/badge/earetaurus/runpod-voxcpm)](https://console.runpod.io/hub/earetaurus/runpod-voxcpm)
+
+if you want to help my runpod Balance  survive the month, please use my referal link
+https://runpod.io?ref=akghcny7
