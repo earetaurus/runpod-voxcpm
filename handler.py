@@ -75,7 +75,7 @@ def split_text_chunks(text: str, max_length: int = 1400) -> list:
     return chunks
 
 
-def synthesize_speech(text: str, prompt_text: str = None, prompt_wav_path: str = None, language: str = None) -> str:
+def synthesize_speech(text: str, prompt_text: str = None, prompt_wav_path: str = None, language: str = None,cfg_value_input = None,inference_timesteps_input = None,max_tokenlength = None) -> str:
     """
     Generate speech audio from text using VoxCPM and return base64-encoded WAV.
     Handles text splitting for inputs exceeding 1500 characters.
@@ -93,7 +93,7 @@ def synthesize_speech(text: str, prompt_text: str = None, prompt_wav_path: str =
         current_prompt_text = prompt_text
         
         chunk_audio_chunks = []
-        for chunk_audio in model.generate_streaming(chunk, prompt_wav_path, current_prompt_text):
+        for chunk_audio in model.generate_streaming(chunk, prompt_wav_path, current_prompt_text,cfg_value_input,inference_timesteps_input,max_tokenlength):
             chunk_audio_chunks.append(chunk_audio)
         
         if not chunk_audio_chunks:
@@ -137,6 +137,9 @@ def handler(job):
     text = job_input.get("text")
     prompt_text = job_input.get('prompt_text', None)
     prompt_wav_url = job_input.get('prompt_wav_url', None)
+    inference_timesteps_input = job_input.get('inference_timesteps_input', None)
+    cfg_value_input = job_input.get('cfg_value_input', None)
+    max_tokenlength = job_input.get('max_tokenlength', None)
     prompt_wav_path = None
     if prompt_wav_url:
         custom_wav_folder = "/workspace/customwav"
@@ -159,7 +162,7 @@ def handler(job):
     try:
         # Pass language if it's meaningful for VoxCPM, otherwise omit or handle as None
         # For now, passing it as is, assuming it might be used in future versions or specific models.
-        audio_b64 = synthesize_speech(text.strip(),prompt_text,prompt_wav_path, language)
+        audio_b64 = synthesize_speech(text.strip(),prompt_text,prompt_wav_path, language,cfg_value_input,inference_timesteps_input,max_tokenlength)
         # Return the language code that was requested or default
         return {"language": language, "audio_base64": audio_b64}
     except Exception as e:

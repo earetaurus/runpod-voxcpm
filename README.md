@@ -27,6 +27,20 @@ https://github.com/earetaurus/tts-apibridge
 }
 ```
 
+
+
+## ⚠️ Important Warning - Voice Cloning Character Limit
+
+**Voice cloning is recommended for texts longer than 1400 characters.**
+
+Due to the model's 1500 character limit, this implementation chunks longer texts into 1400-character segments. However, VoxCPM currently does not support seed values, which means:
+
+- **Voice inconsistency**: Each chunk may have slightly different voice characteristics
+- **Audio artifacts**: You may notice variations in tone, pitch, or speaking style between segments
+- **Reduced quality**: The overall voice cloning quality may be compromised for very long texts
+
+**Recommendation**: For best results with voice cloning, keep your input text under 1400 characters or be prepared for potential voice inconsistencies in longer outputs.
+
 This repository contains a serverless implementation of VoxCPM designed to run on RunPod. It allows for text-to-speech synthesis using the VoxCPM model.
 
 ## Features
