@@ -83,28 +83,14 @@ def synthesize_speech(text: str, prompt_text: str = None, prompt_wav_path: str =
     Language parameter is kept for signature compatibility but might not be used by VoxCPM.
     """
     # Split text into chunks if it exceeds the character limit
-    text_chunks = split_text_chunks(text, max_length=1500)
+    text_chunks = split_text_chunks(text, max_length=1400)
     
     all_audio_chunks = []
     
     for i, chunk in enumerate(text_chunks):
         print(f"[VoxCPM] Processing chunk {i+1}/{len(text_chunks)} ({len(chunk)} characters)")
         
-        # For subsequent chunks, we might want to use the previous chunk as context
-        # This can help maintain continuity in speech generation
         current_prompt_text = prompt_text
-        if i > 0 and prompt_text is None:
-            # Use the last sentence of the previous chunk as context for continuity
-            previous_chunk = text_chunks[i-1]
-            last_period = previous_chunk.rfind('.')
-            last_exclamation = previous_chunk.rfind('!')
-            last_question = previous_chunk.rfind('?')
-            last_sentence_end = max(last_period, last_exclamation, last_question)
-            
-            if last_sentence_end != -1 and last_sentence_end < len(previous_chunk) - 1:
-                current_prompt_text = previous_chunk[last_sentence_end + 1:].strip()
-            else:
-                current_prompt_text = previous_chunk[-100:] if len(previous_chunk) > 100 else previous_chunk
         
         chunk_audio_chunks = []
         for chunk_audio in model.generate_streaming(chunk, prompt_wav_path, current_prompt_text):
