@@ -75,7 +75,7 @@ def split_text_chunks(text: str, max_length: int = 1400) -> list:
     return chunks
 
 
-def synthesize_speech(text: str, prompt_text: str = None, prompt_wav_path: str = None, language: str = None,cfg_value_input = None,inference_timesteps_input = None,max_tokenlength = None) -> str:
+def synthesize_speech(text: str, prompt_text: str = None, prompt_wav_path: str = None, language: str = None,cfg_value_input: float = 2.0,inference_timesteps : int = 10,max_tokenlength: int = 4096) -> str:
     """
     Generate speech audio from text using VoxCPM and return base64-encoded WAV.
     Handles text splitting for inputs exceeding 1500 characters.
@@ -93,7 +93,7 @@ def synthesize_speech(text: str, prompt_text: str = None, prompt_wav_path: str =
         current_prompt_text = prompt_text
         
         chunk_audio_chunks = []
-        for chunk_audio in model.generate_streaming(chunk, prompt_wav_path, current_prompt_text,cfg_value_input,inference_timesteps_input,max_tokenlength):
+        for chunk_audio in model.generate_streaming(chunk, prompt_wav_path, current_prompt_text,cfg_value_input,inference_timesteps,max_tokenlength):
             chunk_audio_chunks.append(chunk_audio)
         
         if not chunk_audio_chunks:
@@ -137,9 +137,9 @@ def handler(job):
     text = job_input.get("text")
     prompt_text = job_input.get('prompt_text', None)
     prompt_wav_url = job_input.get('prompt_wav_url', None)
-    inference_timesteps_input = job_input.get('inference_timesteps_input', None)
-    cfg_value_input = job_input.get('cfg_value_input', None)
-    max_tokenlength = job_input.get('max_tokenlength', None)
+    inference_timesteps = job_input.get('inference_timesteps', int = 10)
+    cfg_value_input = job_input.get('cfg_value_input', float = 2.0)
+    max_tokenlength = job_input.get('max_tokenlength', int = 4096)
     prompt_wav_path = None
     if prompt_wav_url:
         custom_wav_folder = "/workspace/customwav"
