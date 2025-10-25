@@ -31,20 +31,94 @@ model = VoxCPM.from_pretrained(VOXCPM_MODEL)
 # Store sample rate from the model
 SAMPLE_RATE = model.tts_model.sample_rate
 
-def synthesize_speech(text: str,prompt_text: str = None,prompt_wav_path: str = None, language: str = None) -> str:
+def split_text_chunks(text: str, max_length: int = 1400) -> list:
+    """
+    Split text into chunks that don't exceed the maximum character limit.
+    Tries to split at sentence boundaries when possible.
+    """
+    if len(text) <= max_length:
+        return [text]
+    
+    chunks = []
+    remaining_text = text
+    
+    while remaining_text:
+        if len(remaining_text) <= max_length:
+            chunks.append(remaining_text)
+            break
+        
+        # Try to find a good breaking point (sentence end)
+        # Look for periods, exclamation marks, or question marks followed by space or end
+        break_point = max_length
+        for i in range(max_length - 1, max(0, max_length - 200), -1):
+            if i < len(remaining_text) and remaining_text[i] in '.!?':
+                # Check if there's a space after or if it's the end
+                if i == len(remaining_text) - 1 or (i + 1 < len(remaining_text) and remaining_text[i + 1] == ' '):
+                    break_point = i + 1
+                    break
+        
+        # If no good sentence break found, try to break at a space
+        if break_point == max_length:
+            for i in range(max_length - 1, max(0, max_length - 100), -1):
+                if remaining_text[i] == ' ':
+                    break_point = i
+                    break
+        
+        # Extract the chunk
+        chunk = remaining_text[:break_point].strip()
+        if chunk:
+            chunks.append(chunk)
+        
+        # Remove the processed part and any leading spaces
+        remaining_text = remaining_text[break_point:].lstrip()
+    
+    return chunks
+
+
+def synthesize_speech(text: str, prompt_text: str = None, prompt_wav_path: str = None, language: str = None) -> str:
     """
     Generate speech audio from text using VoxCPM and return base64-encoded WAV.
+    Handles text splitting for inputs exceeding 1500 characters.
     VoxCPM's generate_streaming returns chunks, which are concatenated.
     Language parameter is kept for signature compatibility but might not be used by VoxCPM.
     """
-    audio_chunks = []
-    for chunk in model.generate_streaming(text,prompt_wav_path,prompt_text):
-        audio_chunks.append(chunk)
+    # Split text into chunks if it exceeds the character limit
+    text_chunks = split_text_chunks(text, max_length=1500)
+    
+    all_audio_chunks = []
+    
+    for i, chunk in enumerate(text_chunks):
+        print(f"[VoxCPM] Processing chunk {i+1}/{len(text_chunks)} ({len(chunk)} characters)")
+        
+        # For subsequent chunks, we might want to use the previous chunk as context
+        # This can help maintain continuity in speech generation
+        current_prompt_text = prompt_text
+        if i > 0 and prompt_text is None:
+            # Use the last sentence of the previous chunk as context for continuity
+            previous_chunk = text_chunks[i-1]
+            last_period = previous_chunk.rfind('.')
+            last_exclamation = previous_chunk.rfind('!')
+            last_question = previous_chunk.rfind('?')
+            last_sentence_end = max(last_period, last_exclamation, last_question)
+            
+            if last_sentence_end != -1 and last_sentence_end < len(previous_chunk) - 1:
+                current_prompt_text = previous_chunk[last_sentence_end + 1:].strip()
+            else:
+                current_prompt_text = previous_chunk[-100:] if len(previous_chunk) > 100 else previous_chunk
+        
+        chunk_audio_chunks = []
+        for chunk_audio in model.generate_streaming(chunk, prompt_wav_path, current_prompt_text):
+            chunk_audio_chunks.append(chunk_audio)
+        
+        if not chunk_audio_chunks:
+            raise RuntimeError(f"VoxCPM did not return any audio chunks for chunk {i+1}.")
+        
+        all_audio_chunks.extend(chunk_audio_chunks)
 
-    if not audio_chunks:
+    if not all_audio_chunks:
         raise RuntimeError("VoxCPM did not return any audio chunks.")
 
-    audio = np.concatenate(audio_chunks)
+    audio = np.concatenate(all_audio_chunks)
 
     # Ensure audio is in the expected format (e.g., float32)
     if audio.dtype != np.float32:
