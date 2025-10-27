@@ -162,7 +162,7 @@ def handler(job):
     try:
         # Pass language if it's meaningful for VoxCPM, otherwise omit or handle as None
         # For now, passing it as is, assuming it might be used in future versions or specific models.
-        audio_b64 = synthesize_speech(text.strip(),prompt_text,prompt_wav_path, language,cfg_value_input,inference_timesteps_input,max_tokenlength)
+        audio_b64 = synthesize_speech(text.strip(),prompt_text,prompt_wav_path, language,cfg_value_input,inference_timesteps,max_tokenlength)
         # Return the language code that was requested or default
         return {"language": language, "audio_base64": audio_b64}
     except Exception as e:
