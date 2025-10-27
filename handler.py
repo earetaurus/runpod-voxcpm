@@ -137,9 +137,9 @@ def handler(job):
     text = job_input.get("text")
     prompt_text = job_input.get('prompt_text', None)
     prompt_wav_url = job_input.get('prompt_wav_url', None)
-    inference_timesteps = job_input.get('inference_timesteps', int = 10)
-    cfg_value_input = job_input.get('cfg_value_input', float = 2.0)
-    max_tokenlength = job_input.get('max_tokenlength', int = 4096)
+    inference_timesteps = job_input.get('inference_timesteps', 10)
+    cfg_value_input = job_input.get('cfg_value_input', 2.0)
+    max_tokenlength = job_input.get('max_tokenlength', 4096)
     prompt_wav_path = None
     if prompt_wav_url:
         custom_wav_folder = "/workspace/customwav"
