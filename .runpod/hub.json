@@ -9,12 +9,6 @@
     "containerDiskInGb": 40,
     "gpuIds": "AMPERE_16",
     "presets":[
-      {
-        "name": "no vc",
-        "defaults": {
-          "text": "Hello, World!"
-        }
-      },
           {
         "name": "vc",
         "defaults": {

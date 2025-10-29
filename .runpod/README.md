@@ -1,6 +1,8 @@
 # VoxCPM Runpod Serverless Implementation
 
 fair warning this is 80% vibecoding
+check out
+https://github.com/earetaurus/tts-apibridge
 
 ## Usage Example 
 
@@ -20,14 +22,40 @@ fair warning this is 80% vibecoding
   "input": {
     "text": "Hello World",
     "prompt_text": "the text spoken in the wav",
-    "prompt_wav_url": "link to wav file use copy party"
+    "prompt_wav_url": "link to wav file use copyparty"
   }
 }
 ```
 
-This repository contains a serverless implementation of VoxCPM designed to run on RunPod. It allows for text-to-speech synthesis using the VoxCPM model.
+## Advanced Usage Example
 
-heaviliy wip not production ready not even working atm
+```json
+{
+  "input": {
+    "text": "Hello World",
+    "prompt_text": "the text spoken in the wav",
+    "prompt_wav_url": "link to wav file use copyparty",
+    "inference_timesteps": 10,
+    "cfg_value_input": 2.0,
+    "max_tokenlength": 4096
+  }
+}
+```
+
+
+## ⚠️ Important Warning - Voice Cloning Character Limit
+
+**Voice cloning is recommended for texts longer than 1400 characters.**
+
+Due to the model's 1500 character limit, this implementation chunks longer texts into 1400-character segments. However, VoxCPM currently does not support seed values, which means:
+
+- **Voice inconsistency**: Each chunk may have slightly different voice characteristics
+- **Audio artifacts**: You may notice variations in tone, pitch, or speaking style between segments
+- **Reduced quality**: The overall voice cloning quality may be compromised for very long texts
+
+**Recommendation**: For best results with voice cloning, keep your input text under 1400 characters or be prepared for potential voice inconsistencies in longer outputs.
+
+This repository contains a serverless implementation of VoxCPM designed to run on RunPod. It allows for text-to-speech synthesis using the VoxCPM model.
 
 ## Features
 
@@ -43,5 +71,8 @@ This project is inspired by and built upon the following resources:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details.
 [![Runpod](https://api.runpod.io/badge/earetaurus/runpod-voxcpm)](https://console.runpod.io/hub/earetaurus/runpod-voxcpm)
+
+if you want to help my runpod Balance  survive the month, please use my referal link
+https://runpod.io?ref=akghcny7
